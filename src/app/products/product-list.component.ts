@@ -1,16 +1,35 @@
-import { Component } from '@angular/core';
+// lifecycle hook OnInit import
+import { Component, OnInit } from '@angular/core';
+// my product interface - strong typing object
+import { IProduct } from './product';
+
 
 @Component({
     selector: 'pm-products',
-    templateUrl: './product-list.component.html'
+    templateUrl: './product-list.component.html',
+    styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
     pageTitle = 'Product List';
     imageWidth = 50;
     imageMargin = 2;
     showImage = false;
-    listFilter = 'cart';
-    products: any[] = [
+
+    // filter getter/setter
+    _listFilter: string;
+    get listFilter(): string {
+        return this._listFilter;
+    }
+    set listFilter(value: string) {
+        this._listFilter = value;
+        this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
+    }
+
+
+    // filtered product list
+    filteredProducts: IProduct[];
+    // product data
+    products: IProduct[] = [
         {
             "productId": 1,
             "productName": "Leaf Rake",
@@ -33,7 +52,26 @@ export class ProductListComponent {
           }
     ];
 
+    // constructor taking inn our filter
+    constructor() {
+        this.filteredProducts = this.products;
+        this.listFilter = 'cart';
+    }
+    // filter function
+    performFilter(filterBy: string): IProduct[] {
+        filterBy = filterBy.toLocaleLowerCase();
+        return this.products.filter((product: IProduct) =>
+            product.productName.toLocaleLowerCase().indexOf(filterBy) !== -1);
+    }
+
     toggleImage(): void {
         this.showImage = !this.showImage;
     }
+
+    ngOnInit(): void {
+        console.log('In OnInit');
+    }
+
+
+
 }
