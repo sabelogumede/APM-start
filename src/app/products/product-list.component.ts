@@ -9,7 +9,7 @@ import { IProduct } from './product';
     templateUrl: './product-list.component.html',
     styleUrls: ['./product-list.component.css']
 })
-// implement Onint lifecyle interface
+
 export class ProductListComponent implements OnInit {
     pageTitle = 'Product List';
     imageWidth = 50;
@@ -57,7 +57,7 @@ export class ProductListComponent implements OnInit {
         this.filteredProducts = this.products;
         this.listFilter = 'cart';
     }
-    // perform-form-filter function called in setter conditional logic
+    // filter function
     performFilter(filterBy: string): IProduct[] {
         filterBy = filterBy.toLocaleLowerCase();
         return this.products.filter((product: IProduct) =>
@@ -67,7 +67,6 @@ export class ProductListComponent implements OnInit {
     toggleImage(): void {
         this.showImage = !this.showImage;
     }
-    // interface hook
     ngOnInit(): void {
         console.log('In OnInit');
     }
